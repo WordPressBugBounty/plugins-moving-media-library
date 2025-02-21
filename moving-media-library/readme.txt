@@ -4,8 +4,8 @@ Donate link: https://shop.riverforest-wp.info/donate/
 Tags: media, media library, moving
 Requires at least: 4.6
 Requires PHP: 8.0
-Tested up to: 6.6
-Stable tag: 1.22
+Tested up to: 6.7
+Stable tag: 1.23
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ none
 2. Import
 
 == Changelog ==
+
+= [1.23] 2025/02/22 =
+* Fix - Sanitize file names when deleting json files.
 
 = [1.22] 2024/05/26 =
 * Fix - Fixed problem with import files not being copied.
@@ -136,6 +139,9 @@ Fixed translation.
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.23 =
+Security measures.
 
 = 1.00 =
 Initial release.

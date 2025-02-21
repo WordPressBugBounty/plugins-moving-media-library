@@ -3,7 +3,7 @@
  * Plugin Name: Moving Media Library
  * Plugin URI:  https://wordpress.org/plugins/moving-media-library/
  * Description: Supports the transfer of Media Library between servers.
- * Version:     1.22
+ * Version:     1.23
  * Author:      Katsushi Kawamori
  * Author URI:  https://riverforest-wp.info/
  * License:     GPLv2 or later

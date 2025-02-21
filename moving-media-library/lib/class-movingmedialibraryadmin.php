@@ -83,8 +83,8 @@ class MovingMediaLibraryAdmin {
 		}
 		if ( $file == $this_plugin ) {
 			$links[] = '<a href="' . admin_url( 'admin.php?page=movingmedialibrary' ) . '">Moving Media Library</a>';
-			$links[] = '<a href="' . admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) . '">' . __( 'Export' ) . '</a>';
-			$links[] = '<a href="' . admin_url( 'admin.php?page=movingmedialibrary-update-db' ) . '">' . __( 'Import' ) . '</a>';
+			$links[] = '<a href="' . admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) . '">' . __( 'Export', 'moving-media-library' ) . '</a>';
+			$links[] = '<a href="' . admin_url( 'admin.php?page=movingmedialibrary-update-db' ) . '">' . __( 'Import', 'moving-media-library' ) . '</a>';
 		}
 		return $links;
 	}
@@ -105,16 +105,16 @@ class MovingMediaLibraryAdmin {
 		);
 		add_submenu_page(
 			'movingmedialibrary',
-			__( 'Export' ),
-			__( 'Export' ),
+			__( 'Export', 'moving-media-library' ),
+			__( 'Export', 'moving-media-library' ),
 			'manage_options',
 			'movingmedialibrary-generate-json',
 			array( $this, 'generate_json_page' )
 		);
 		add_submenu_page(
 			'movingmedialibrary',
-			__( 'Import' ),
-			__( 'Import' ),
+			__( 'Import', 'moving-media-library' ),
+			__( 'Import', 'moving-media-library' ),
 			'manage_options',
 			'movingmedialibrary-update-db',
 			array( $this, 'update_db_page' )
@@ -129,7 +129,7 @@ class MovingMediaLibraryAdmin {
 	public function generate_json_page() {
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'moving-media-library' ) );
 		}
 
 		$scriptname = admin_url( 'admin.php?page=movingmedialibrary-generate-json' );
@@ -141,7 +141,7 @@ class MovingMediaLibraryAdmin {
 				} else {
 					update_option( 'moving_media_library_mail_send', false );
 				}
-				echo '<div class="notice notice-success is-dismissible"><ul><li>' . esc_html( __( 'Settings' ) . ' --> ' . __( 'Changes saved.' ) ) . '</li></ul></div>';
+				echo '<div class="notice notice-success is-dismissible"><ul><li>' . esc_html( __( 'Settings', 'moving-media-library' ) . ' --> ' . __( 'Changes saved.', 'moving-media-library' ) ) . '</li></ul></div>';
 			}
 		}
 
@@ -149,7 +149,7 @@ class MovingMediaLibraryAdmin {
 			if ( check_admin_referer( 'zm_file_json', 'movingmedialibrary_file_json' ) ) {
 				if ( ! empty( $_POST['number_files'] ) ) {
 					update_option( 'moving_media_library_number_files', absint( $_POST['number_files'] ) );
-					echo '<div class="notice notice-success is-dismissible"><ul><li>' . esc_html( __( 'Settings' ) . ' --> ' . __( 'Changes saved.' ) ) . '</li></ul></div>';
+					echo '<div class="notice notice-success is-dismissible"><ul><li>' . esc_html( __( 'Settings', 'moving-media-library' ) . ' --> ' . __( 'Changes saved.', 'moving-media-library' ) ) . '</li></ul></div>';
 				}
 			}
 		}
@@ -169,7 +169,7 @@ class MovingMediaLibraryAdmin {
 						FILTER_CALLBACK,
 						array(
 							'options' => function ( $value ) {
-								return sanitize_text_field( $value );
+								return sanitize_file_name( $value );
 							},
 						)
 					);
@@ -181,8 +181,8 @@ class MovingMediaLibraryAdmin {
 		?>
 		<div class="wrap">
 
-		<h2>Moving Media Library <a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) ); ?>" style="text-decoration: none;"><?php esc_html_e( 'Export' ); ?></a>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-update-db' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Import' ); ?></a>
+		<h2>Moving Media Library <a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) ); ?>" style="text-decoration: none;"><?php esc_html_e( 'Export', 'moving-media-library' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-update-db' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Import', 'moving-media-library' ); ?></a>
 			<?php
 			if ( class_exists( 'BulkMediaRegister' ) ) {
 				$bulkmediaregister_url = admin_url( 'admin.php?page=bulkmediaregister' );
@@ -216,7 +216,7 @@ class MovingMediaLibraryAdmin {
 		</h2>
 		<div style="clear: both;"></div>
 
-		<h3><?php esc_html_e( 'Export' ); ?></h3>
+		<h3><?php esc_html_e( 'Export', 'moving-media-library' ); ?></h3>
 		<form method="post" action="<?php echo esc_url( $scriptname ); ?>">
 		<div style="margin: 5px; padding: 5px;">
 			<p class="description">
@@ -226,9 +226,9 @@ class MovingMediaLibraryAdmin {
 			<div style="margin: 5px; padding: 5px; vertical-align: middle;">
 			<input type="checkbox" name="mail_send" value="1" <?php checked( get_option( 'moving_media_library_mail_send' ), true ); ?>>
 			<?php esc_html_e( 'Send the exported JSON file by e-mail', 'moving-media-library' ); ?>
-			<?php submit_button( __( 'Change' ), 'large', 'Jsonmailsend', false, array( 'style' => 'vertical-align: middle;' ) ); ?>
+			<?php submit_button( __( 'Change', 'moving-media-library' ), 'large', 'Jsonmailsend', false, array( 'style' => 'vertical-align: middle;' ) ); ?>
 			</div>
-			<?php submit_button( __( 'Export as JSON' ), 'large', 'Cjson', true ); ?>
+			<?php submit_button( __( 'Export as JSON', 'moving-media-library' ), 'large', 'Cjson', true ); ?>
 		</div>
 		<?php
 		$logs = get_option( 'moving_media_library_export_files' );
@@ -238,15 +238,15 @@ class MovingMediaLibraryAdmin {
 			<div style="margin: 5px; padding: 5px;">
 			<?php esc_html_e( 'Number of latest files to keep', 'moving-media-library' ); ?> : 
 			<input type="number" name="number_files" value="<?php echo esc_attr( get_option( 'moving_media_library_number_files', 5 ) ); ?>" min="1" max="100" step="1" style="width: 70px;" />
-			<?php submit_button( __( 'Change' ), 'large', 'Cnumber', false ); ?>
-			<?php submit_button( __( 'Delete' ), 'large', 'Djson', true ); ?>
+			<?php submit_button( __( 'Change', 'moving-media-library' ), 'large', 'Cnumber', false ); ?>
+			<?php submit_button( __( 'Delete', 'moving-media-library' ), 'large', 'Djson', true ); ?>
 			<table border=1 cellspacing="0" cellpadding="5" bordercolor="#000000" style="border-collapse: collapse;">
 			<tr>
-			<th><?php esc_html_e( 'Delete' ); ?></th>
-			<th><?php esc_html_e( 'Name' ); ?></th>
-			<th><?php esc_html_e( 'Date/time' ); ?></th>
-			<th><?php esc_html_e( 'Size' ); ?></th>
-			<th><?php esc_html_e( 'Action' ); ?></th>
+			<th><?php esc_html_e( 'Delete', 'moving-media-library' ); ?></th>
+			<th><?php esc_html_e( 'Name', 'moving-media-library' ); ?></th>
+			<th><?php esc_html_e( 'Date/time', 'moving-media-library' ); ?></th>
+			<th><?php esc_html_e( 'Size', 'moving-media-library' ); ?></th>
+			<th><?php esc_html_e( 'Action', 'moving-media-library' ); ?></th>
 			</tr>
 			<?php
 			foreach ( $logs as $value ) {
@@ -275,7 +275,7 @@ class MovingMediaLibraryAdmin {
 					<?php echo esc_html( $json_size ); ?>
 					</td>
 					<td>
-					<button type="button" class="button button-large" onclick="location.href='<?php echo esc_url( $json_fileurl ); ?>'"><?php esc_html_e( 'View' ); ?></button>
+					<button type="button" class="button button-large" onclick="location.href='<?php echo esc_url( $json_fileurl ); ?>'"><?php esc_html_e( 'View', 'moving-media-library' ); ?></button>
 					&nbsp;
 					<a href="<?php echo esc_url( $json_fileurl ); ?>" download="<?php echo esc_attr( $value ); ?>"><button type="button" class="button button-large"><?php esc_html_e( 'Download', 'moving-media-library' ); ?></button></a>
 					</td>
@@ -285,7 +285,7 @@ class MovingMediaLibraryAdmin {
 			}
 			?>
 			</table>
-			<?php submit_button( __( 'Delete' ), 'large', 'Djson', true ); ?>
+			<?php submit_button( __( 'Delete', 'moving-media-library' ), 'large', 'Djson', true ); ?>
 			</div>
 			<?php
 		}
@@ -305,7 +305,7 @@ class MovingMediaLibraryAdmin {
 	public function update_db_page() {
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'moving-media-library' ) );
 		}
 
 		$scriptname = admin_url( 'admin.php?page=movingmedialibrary-update-db' );
@@ -316,7 +316,7 @@ class MovingMediaLibraryAdmin {
 		}
 		if ( isset( $_SERVER['CONTENT_LENGTH'] ) && ! empty( $_SERVER['CONTENT_LENGTH'] ) ) {
 			if ( 0 < $max_upload_size && $max_upload_size < intval( $_SERVER['CONTENT_LENGTH'] ) ) {
-				echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'This is larger than the maximum size. Please try another.' ) . '</li></ul></div>';
+				echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'This is larger than the maximum size. Please try another.', 'moving-media-library' ) . '</li></ul></div>';
 			}
 		}
 
@@ -340,7 +340,7 @@ class MovingMediaLibraryAdmin {
 						$mimetype = sanitize_text_field( wp_unslash( $_FILES['filename']['type'] ) );
 						$filetype = wp_check_filetype( $filename );
 						if ( ! $filetype['ext'] && ! current_user_can( 'unfiltered_upload' ) ) {
-							echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'Sorry, this file type is not permitted for security reasons.' ) . '</li></ul></div>';
+							echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'Sorry, this file type is not permitted for security reasons.', 'moving-media-library' ) . '</li></ul></div>';
 						} else {
 							$filetype2 = wp_check_filetype( $filename, array( $filetype['ext'] => $mimetype ) );
 							if ( ! empty( $filetype2['type'] ) ) {
@@ -380,14 +380,14 @@ class MovingMediaLibraryAdmin {
 									do_action( 'movingmedialibrary_update_db_hook', $json_file, $uid, $user_ids, $search_url, $replace_url, $change_guid );
 									wp_delete_file( $json_file );
 								} else {
-									echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'Could not copy file.' ) . '</li></ul></div>';
+									echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'Could not copy file.', 'moving-media-library' ) . '</li></ul></div>';
 								}
 							} else {
-								echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'Sorry, this file type is not permitted for security reasons.' ) . '</li></ul></div>';
+								echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'Sorry, this file type is not permitted for security reasons.', 'moving-media-library' ) . '</li></ul></div>';
 							}
 						}
 					} else {
-						echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'No such file exists! Double check the name and try again.' ) . '</li></ul></div>';
+						echo '<div class="notice notice-error is-dismissible"><ul><li>' . esc_html__( 'No such file exists! Double check the name and try again.', 'moving-media-library' ) . '</li></ul></div>';
 					}
 				}
 			}
@@ -396,8 +396,8 @@ class MovingMediaLibraryAdmin {
 		?>
 		<div class="wrap">
 
-		<h2>Moving Media Library <a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-update-db' ) ); ?>" style="text-decoration: none;"><?php esc_html_e( 'Import' ); ?></a>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Export' ); ?></a>
+		<h2>Moving Media Library <a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-update-db' ) ); ?>" style="text-decoration: none;"><?php esc_html_e( 'Import', 'moving-media-library' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Export', 'moving-media-library' ); ?></a>
 			<?php
 			if ( class_exists( 'BulkMediaRegister' ) ) {
 				$bulkmediaregister_url = admin_url( 'admin.php?page=bulkmediaregister' );
@@ -447,7 +447,7 @@ class MovingMediaLibraryAdmin {
 			<hr>
 			<form method="post" action="<?php echo esc_url( $scriptname ); ?>" enctype="multipart/form-data">
 			<?php wp_nonce_field( 'mml_file_load', 'movingmedialibrary_import_file_load' ); ?>
-			<strong><?php esc_html_e( 'User' ); ?></strong>
+			<strong><?php esc_html_e( 'User', 'moving-media-library' ); ?></strong>
 				<div style="margin: 5px; padding: 5px;">
 				<input type="checkbox" name="current_user_id" value="1" />
 				<?php
@@ -460,8 +460,8 @@ class MovingMediaLibraryAdmin {
 			<div style="padding: 10px;">
 			<table border=1 cellspacing="0" cellpadding="5" bordercolor="#000000" style="border-collapse: collapse;">
 			<tr>
-			<th><?php echo esc_html( __( 'Original site', 'moving-media-library' ) . '[' . __( 'User' ) . ' ID' ); ?>]</th>
-			<th><?php echo esc_html( __( 'Current site', 'moving-media-library' ) . '[' . __( 'Username' ) . ' : ' . __( 'User' ) . ' ID' ); ?>]</th>
+			<th><?php echo esc_html( __( 'Original site', 'moving-media-library' ) . '[' . __( 'User', 'moving-media-library' ) . ' ID' ); ?>]</th>
+			<th><?php echo esc_html( __( 'Current site', 'moving-media-library' ) . '[' . __( 'Username', 'moving-media-library' ) . ' : ' . __( 'User', 'moving-media-library' ) . ' ID' ); ?>]</th>
 			</tr>
 			<?php
 			$users = get_users(
@@ -492,7 +492,7 @@ class MovingMediaLibraryAdmin {
 			</div>
 			<hr>
 
-			<strong><?php esc_html_e( 'Content' ); ?></strong>
+			<strong><?php esc_html_e( 'Content', 'moving-media-library' ); ?></strong>
 			<div style="margin: 5px; padding: 5px;">
 			<?php esc_html_e( 'Replace all URLs in the content as follows.', 'moving-media-library' ); ?>
 				<div style="padding: 10px;">
@@ -521,7 +521,7 @@ class MovingMediaLibraryAdmin {
 			<div style="padding: 5px;">
 			<?php
 			/* translators: Maximum upload file size */
-			echo esc_html( sprintf( __( 'Maximum upload file size: %s.' ), $limit_str ) );
+			echo esc_html( sprintf( __( 'Maximum upload file size: %s.', 'moving-media-library' ), $limit_str ) );
 			?>
 			</div>
 			<div style="padding: 5px;">
@@ -543,15 +543,15 @@ class MovingMediaLibraryAdmin {
 	public function manage_page() {
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'moving-media-library' ) );
 		}
 
 		?>
 		<div class="wrap">
 
 		<h2>Moving Media Library
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Export' ); ?></a>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-update-db' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Import' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-generate-json' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Export', 'moving-media-library' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=movingmedialibrary-update-db' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Import', 'moving-media-library' ); ?></a>
 			<?php
 			if ( class_exists( 'BulkMediaRegister' ) ) {
 				$bulkmediaregister_url = admin_url( 'admin.php?page=bulkmediaregister' );
@@ -629,7 +629,7 @@ class MovingMediaLibraryAdmin {
 				}
 			}
 		}
-		$plugin_version = __( 'Version:' ) . ' ' . $plugin_ver_num;
+		$plugin_version = __( 'Version:', 'moving-media-library' ) . ' ' . $plugin_ver_num;
 		/* translators: FAQ Link & Slug */
 		$faq       = sprintf( __( 'https://wordpress.org/plugins/%s/faq', 'moving-media-library' ), $slug );
 		$support   = 'https://wordpress.org/support/plugin/' . $slug;
@@ -650,7 +650,7 @@ class MovingMediaLibraryAdmin {
 		<a style="text-decoration: none;" href="<?php echo esc_url( $translate ); ?>" target="_blank" rel="noopener noreferrer">
 		<?php
 		/* translators: Plugin translation link */
-		echo esc_html( sprintf( __( 'Translations for %s' ), $plugin_name ) );
+		echo esc_html( sprintf( __( 'Translations for %s', 'moving-media-library' ), $plugin_name ) );
 		?>
 		</a> | <a style="text-decoration: none;" href="<?php echo esc_url( $facebook ); ?>" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-facebook"></span></a> | <a style="text-decoration: none;" href="<?php echo esc_url( $twitter ); ?>" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-twitter"></span></a> | <a style="text-decoration: none;" href="<?php echo esc_url( $youtube ); ?>" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-video-alt3"></span></a>
 		</div>
@@ -659,7 +659,7 @@ class MovingMediaLibraryAdmin {
 		<div style="width: 250px; height: 180px; margin: 5px; padding: 5px; border: #CCC 2px solid;">
 		<h3><?php esc_html_e( 'Please make a donation if you like my work or would like to further the development of this plugin.', 'moving-media-library' ); ?></h3>
 		<div style="text-align: right; margin: 5px; padding: 5px;"><span style="padding: 3px; color: #ffffff; background-color: #008000">Plugin Author</span> <span style="font-weight: bold;">Katsushi Kawamori</span></div>
-		<button type="button" style="margin: 5px; padding: 5px;" onclick="window.open('<?php echo esc_url( $donate ); ?>')"><?php esc_html_e( 'Donate to this plugin &#187;' ); ?></button>
+		<button type="button" style="margin: 5px; padding: 5px;" onclick="window.open('<?php echo esc_url( $donate ); ?>')"><?php esc_html_e( 'Donate to this plugin &#187;', 'moving-media-library' ); ?></button>
 		</div>
 
 		<?php
